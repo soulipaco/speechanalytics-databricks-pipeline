@@ -1,0 +1,96 @@
+# taxonomies/emotions.yml
+catalog:
+  name: emotion_catalog
+  version: "v1.0"
+  description: >
+    Controlled emotion vocabulary grouped by sentiment. Used for start/end emotion classification
+    for Customer and Agent. Each emotion includes a polarity_score on a -1..+1 scale.
+rules:
+  selection_rule: "Choose exactly one emotion for start and one for end for each role. Must be active."
+  polarity_scale: "-1 to +1"
+items:
+  # --- Positive (sample set; expand to ~30) ---
+  - emotion: Happy
+    active: true
+    sentiment_group: Positive
+    polarity_score: 0.8
+    definition: "Positive mood; satisfaction or delight."
+    synonyms: ["pleased", "glad", "cheerful"]
+    examples:
+      - "Great, thank you!"
+  - emotion: Relieved
+    active: true
+    sentiment_group: Positive
+    polarity_score: 0.7
+    definition: "Stress reduced after reassurance or resolution."
+    synonyms: ["reassured", "at ease"]
+    examples:
+      - "Okay, that makes me feel better."
+  - emotion: Grateful
+    active: true
+    sentiment_group: Positive
+    polarity_score: 0.85
+    definition: "Expresses appreciation for help or outcome."
+    synonyms: ["thankful", "appreciative"]
+    examples:
+      - "Thanks a lot for your help."
+
+  # --- Neutral (sample set; expand to ~30) ---
+  - emotion: Neutral
+    active: true
+    sentiment_group: Neutral
+    polarity_score: 0.0
+    definition: "No strong positive or negative emotion expressed."
+    synonyms: ["matter-of-fact", "flat"]
+    examples:
+      - "I’m calling about my order status."
+  - emotion: Confused
+    active: true
+    sentiment_group: Neutral
+    polarity_score: -0.1
+    definition: "Uncertainty or lack of understanding."
+    synonyms: ["unsure", "unclear"]
+    examples:
+      - "I don’t understand why this happened."
+  - emotion: Curious
+    active: true
+    sentiment_group: Neutral
+    polarity_score: 0.1
+    definition: "Seeking information without strong emotion."
+    synonyms: ["inquisitive"]
+    examples:
+      - "Can you explain how this works?"
+
+  # --- Negative (sample set; expand to ~30) ---
+  - emotion: Frustrated
+    active: true
+    sentiment_group: Negative
+    polarity_score: -0.6
+    definition: "Annoyance due to repeated problems or obstacles."
+    synonyms: ["irritated", "fed up"]
+    examples:
+      - "This keeps happening and it’s really frustrating."
+  - emotion: Angry
+    active: true
+    sentiment_group: Negative
+    polarity_score: -0.85
+    definition: "Strong displeasure; confrontation or blame."
+    synonyms: ["furious", "mad"]
+    examples:
+      - "This is unacceptable."
+  - emotion: Disappointed
+    active: true
+    sentiment_group: Negative
+    polarity_score: -0.55
+    definition: "Let down by outcome or service."
+    synonyms: ["let down", "unhappy"]
+    examples:
+      - "I expected better support."
+  - emotion: Worried
+    active: true
+    sentiment_group: Negative
+    polarity_score: -0.45
+    definition: "Concern about consequences or uncertainty."
+    synonyms: ["concerned", "anxious"]
+    examples:
+      - "I’m worried my account is compromised."

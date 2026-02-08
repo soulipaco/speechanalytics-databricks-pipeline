@@ -1,0 +1,85 @@
+# taxonomies/contact_drivers.yml
+taxonomy:
+  name: contact_drivers
+  version: "v1.0"
+  description: >
+    High-level reason the customer contacted support (business-facing theme).
+    Used for top-level categorization and trend reporting.
+  rules:
+    selection_rule: "Choose exactly one label from active items. If uncertain, pick the closest and set confidence low."
+    fallback_label: "Other"
+    confidence_scale: "0.0 to 1.0"
+items:
+  - label: Billing and Payments
+    active: true
+    definition: "Questions or problems about charges, invoices, payment methods, refunds, or billing cycles."
+    synonyms: ["payment issue", "invoice", "charged", "refund", "fee", "billing"]
+    examples:
+      - "I was charged twice for my subscription."
+      - "I need a refund for the last payment."
+      - "My card keeps getting declined when I try to pay."
+    exclusions:
+      - "Account access problems (use Account Access)"
+      - "Delivery problems (use Orders and Delivery)"
+  - label: Account Access
+    active: true
+    definition: "Login, password reset, multi-factor authentication, locked accounts, or access permissions."
+    synonyms: ["can't log in", "password reset", "locked out", "MFA", "2FA", "authentication"]
+    examples:
+      - "I can't log into my account after changing my phone."
+      - "My account is locked and I need to regain access."
+      - "I never receive the verification code."
+  - label: Technical Support
+    active: true
+    definition: "Product/service not functioning as expected, errors, crashes, connectivity, performance issues."
+    synonyms: ["bug", "error", "crash", "not working", "connection issue", "slow"]
+    examples:
+      - "The app keeps crashing when I open it."
+      - "I get an error message when I try to submit the form."
+      - "The service is very slow today."
+  - label: Orders and Delivery
+    active: true
+    definition: "Placing orders, order status, delivery delays, missing items, shipping address, returns logistics."
+    synonyms: ["shipment", "tracking", "delivery delay", "missing package", "return", "order status"]
+    examples:
+      - "My order says delivered but I didn't receive it."
+      - "Can you update the delivery address?"
+      - "I want to return an item and need the steps."
+  - label: Subscription and Plan Changes
+    active: true
+    definition: "Plan upgrades/downgrades, cancellations, renewals, trial periods, subscription management."
+    synonyms: ["cancel", "upgrade", "downgrade", "renewal", "trial", "plan"]
+    examples:
+      - "I want to cancel my subscription."
+      - "How do I upgrade to the premium plan?"
+      - "My trial ended and I was charged—can you help?"
+  - label: Product Information and How-To
+    active: true
+    definition: "How to use a feature, product capabilities, pricing info, eligibility, or general questions."
+    synonyms: ["how to", "feature", "pricing", "capabilities", "instructions"]
+    examples:
+      - "How do I enable notifications?"
+      - "What features are included in this plan?"
+      - "Can you explain how this works?"
+  - label: Complaints and Escalations
+    active: true
+    definition: "Dissatisfaction, complaints about service experience, requests for supervisor/escalation."
+    synonyms: ["complaint", "escalate", "supervisor", "unhappy", "bad experience"]
+    examples:
+      - "I want to file a complaint about the service."
+      - "Can I speak with a supervisor?"
+      - "This has happened multiple times and I'm frustrated."
+  - label: Fraud and Security Concern
+    active: true
+    definition: "Suspected fraud, unauthorized access, security incidents, suspicious activity."
+    synonyms: ["fraud", "unauthorized", "hacked", "suspicious", "security"]
+    examples:
+      - "I see unauthorized charges on my account."
+      - "I think someone accessed my account."
+      - "I received a suspicious email claiming to be from you."
+  - label: Other
+    active: true
+    definition: "Use when none of the other labels fit."
+    synonyms: ["misc", "unknown", "not sure"]
+    examples:
+      - "The request doesn't fit existing categories."

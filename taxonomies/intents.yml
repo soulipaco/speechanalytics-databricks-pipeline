@@ -1,0 +1,90 @@
+# taxonomies/intents.yml
+taxonomy:
+  name: intents
+  version: "v1.0"
+  description: >
+    The customer's intended outcome or request type (what they want to happen).
+    Choose exactly one primary intent.
+  rules:
+    selection_rule: "Choose exactly one intent. If multiple, pick the primary outcome request."
+    fallback_label: "Other"
+    confidence_scale: "0.0 to 1.0"
+items:
+  - label: Request Refund
+    active: true
+    definition: "Customer wants money returned for a purchase/subscription."
+    synonyms: ["refund", "money back", "return payment"]
+    examples:
+      - "I want a refund."
+  - label: Make a Payment
+    active: true
+    definition: "Customer is trying to pay or update payment method to complete a payment."
+    synonyms: ["pay now", "update card", "complete payment"]
+    examples:
+      - "I need to pay my invoice."
+  - label: Dispute a Charge
+    active: true
+    definition: "Customer wants to dispute or challenge a charge as incorrect or unauthorized."
+    synonyms: ["dispute", "chargeback", "unauthorized charge"]
+    examples:
+      - "I want to dispute this charge."
+  - label: Restore Account Access
+    active: true
+    definition: "Customer wants to regain access (reset password/unlock account/MFA fix)."
+    synonyms: ["reset password", "unlock", "fix login", "MFA help"]
+    examples:
+      - "Help me log in again."
+  - label: Troubleshoot a Technical Problem
+    active: true
+    definition: "Customer wants a technical fix or guidance to resolve an error."
+    synonyms: ["fix bug", "resolve error", "not working"]
+    examples:
+      - "Please help fix this error."
+  - label: Track or Update an Order
+    active: true
+    definition: "Customer wants order status, delivery updates, address changes."
+    synonyms: ["track order", "delivery status", "update address"]
+    examples:
+      - "Where is my order?"
+  - label: Return or Replace an Item
+    active: true
+    definition: "Customer wants to return an item or request a replacement for missing/wrong items."
+    synonyms: ["return", "replace", "exchange"]
+    examples:
+      - "I want to return this item."
+  - label: Cancel Subscription
+    active: true
+    definition: "Customer wants to cancel subscription/service."
+    synonyms: ["cancel", "unsubscribe", "stop renewal"]
+    examples:
+      - "Cancel my subscription."
+  - label: Change Plan
+    active: true
+    definition: "Customer wants to upgrade/downgrade subscription plan."
+    synonyms: ["upgrade", "downgrade", "switch plan"]
+    examples:
+      - "I want to upgrade."
+  - label: Get Product Information
+    active: true
+    definition: "Customer wants information about features, pricing, eligibility, or usage."
+    synonyms: ["how to", "features", "pricing", "info"]
+    examples:
+      - "How does this feature work?"
+  - label: Escalate Complaint
+    active: true
+    definition: "Customer wants escalation, supervisor, or formal complaint handling."
+    synonyms: ["supervisor", "complaint", "escalate"]
+    examples:
+      - "I want to speak to a supervisor."
+  - label: Report Fraud or Security Issue
+    active: true
+    definition: "Customer wants to report suspicious activity or secure the account."
+    synonyms: ["fraud", "security", "unauthorized"]
+    examples:
+      - "I think my account was hacked."
+  - label: Other
+    active: true
+    definition: "Use when none of the above intents match."
+    synonyms: ["misc", "unknown"]
+    examples:
+      - "No clear intent."

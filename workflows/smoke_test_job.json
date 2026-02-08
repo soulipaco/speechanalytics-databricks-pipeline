@@ -1,0 +1,328 @@
+{
+  "name": "speech-analytics-smoke-test",
+  "format": "MULTI_TASK",
+  "job_clusters": [
+    {
+      "job_cluster_key": "smoke_cluster",
+      "new_cluster": {
+        "spark_version": "14.3.x-scala2.12",
+        "node_type_id": "REPLACE_WITH_SMALL_NODE_TYPE",
+        "num_workers": 1,
+        "autotermination_minutes": 30
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "task_key": "foundation_01_ingest_audio",
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_01_ingest_audio",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5",
+          "volume_root": "<volume_root>"
+        }
+      }
+    },
+    {
+      "task_key": "foundation_02_preprocess_audio",
+      "depends_on": [
+        {
+          "task_key": "foundation_01_ingest_audio"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_02_preprocess_audio",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5",
+          "enable_preprocess_audio": "false"
+        }
+      }
+    },
+    {
+      "task_key": "foundation_03_diarize_audio",
+      "depends_on": [
+        {
+          "task_key": "foundation_02_preprocess_audio"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_03_diarize_audio",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5",
+          "enable_diarization": "false"
+        }
+      }
+    },
+    {
+      "task_key": "foundation_04_transcribe_audio",
+      "depends_on": [
+        {
+          "task_key": "foundation_03_diarize_audio"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_04_transcribe_audio",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5"
+        }
+      }
+    },
+    {
+      "task_key": "foundation_05_align_turns",
+      "depends_on": [
+        {
+          "task_key": "foundation_04_transcribe_audio"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_05_align_turns",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5"
+        }
+      }
+    },
+    {
+      "task_key": "foundation_06_redact_pii",
+      "depends_on": [
+        {
+          "task_key": "foundation_05_align_turns"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_06_redact_pii",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5"
+        }
+      }
+    },
+    {
+      "task_key": "foundation_07_translate_turns",
+      "depends_on": [
+        {
+          "task_key": "foundation_06_redact_pii"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_07_translate_turns",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5",
+          "enable_translation": "false"
+        }
+      }
+    },
+    {
+      "task_key": "foundation_08_publish_and_finalize",
+      "depends_on": [
+        {
+          "task_key": "foundation_07_translate_turns"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_08_publish_and_finalize",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5",
+          "publish_latest_views": "false"
+        }
+      }
+    },
+    {
+      "task_key": "insights_01_compute_conversation_metrics",
+      "depends_on": [
+        {
+          "task_key": "foundation_08_publish_and_finalize"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_01_compute_conversation_metrics",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5"
+        }
+      }
+    },
+    {
+      "task_key": "insights_02_load_taxonomies_to_dim_tables",
+      "depends_on": [
+        {
+          "task_key": "insights_01_compute_conversation_metrics"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_02_load_taxonomies_to_dim_tables",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5"
+        }
+      }
+    },
+    {
+      "task_key": "insights_03_build_text_chunks",
+      "depends_on": [
+        {
+          "task_key": "insights_02_load_taxonomies_to_dim_tables"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_03_build_text_chunks",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5",
+          "translation_enabled": "false"
+        }
+      }
+    },
+    {
+      "task_key": "insights_04_embed_chunks",
+      "depends_on": [
+        {
+          "task_key": "insights_03_build_text_chunks"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_04_embed_chunks",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5",
+          "enable_embeddings": "false"
+        }
+      }
+    },
+    {
+      "task_key": "insights_05_build_vector_search_rag_index",
+      "depends_on": [
+        {
+          "task_key": "insights_04_embed_chunks"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_05_build_vector_search_rag_index",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5",
+          "enable_rag_index": "false"
+        }
+      }
+    },
+    {
+      "task_key": "insights_06_llm_extract_chunk_insights",
+      "depends_on": [
+        {
+          "task_key": "insights_05_build_vector_search_rag_index"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_06_llm_extract_chunk_insights",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5",
+          "enable_llm": "false"
+        }
+      }
+    },
+    {
+      "task_key": "insights_07_llm_consolidate_call_insights",
+      "depends_on": [
+        {
+          "task_key": "insights_06_llm_extract_chunk_insights"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_07_llm_consolidate_call_insights",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5",
+          "enable_llm_consolidation": "false"
+        }
+      }
+    },
+    {
+      "task_key": "insights_08_quality_gates_and_finalize",
+      "depends_on": [
+        {
+          "task_key": "insights_07_llm_consolidate_call_insights"
+        }
+      ],
+      "job_cluster_key": "smoke_cluster",
+      "notebook_task": {
+        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_08_quality_gates_and_finalize",
+        "base_parameters": {
+          "catalog": "main",
+          "schema": "speech_analytics_dev",
+          "run_id": "{{job.run_id}}",
+          "run_mode": "sample",
+          "max_files_per_run": "5",
+          "allow_warn": "true"
+        }
+      }
+    }
+  ],
+  "description": "Template job JSON for SpeechAnalytics. Replace /Repos/<user>/... with your real Databricks Repo path, and provide volume_root (for foundation_01_ingest_audio; optionally for other tasks if needed). Keep secret values in Databricks secret scopes, not in this file."
+}

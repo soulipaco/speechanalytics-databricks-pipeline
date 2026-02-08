@@ -1,0 +1,102 @@
+# taxonomies/issues.yml
+taxonomy:
+  name: issues
+  version: "v1.0"
+  description: >
+    The specific problem the customer is experiencing (more concrete than contact driver).
+    Choose one primary issue per call.
+  rules:
+    selection_rule: "Choose exactly one issue. Prefer the most actionable/diagnosable issue."
+    fallback_label: "Other"
+    confidence_scale: "0.0 to 1.0"
+items:
+  - label: Payment Failed
+    active: true
+    definition: "A payment attempt cannot be completed (declined, error, verification failure)."
+    synonyms: ["card declined", "payment error", "cannot pay", "transaction failed"]
+    examples:
+      - "My payment keeps failing with an error."
+  - label: Refund Request
+    active: true
+    definition: "Customer requests money back for a transaction or subscription."
+    synonyms: ["refund", "chargeback", "money back"]
+    examples:
+      - "I want a refund for the last month."
+  - label: Unexpected Charge
+    active: true
+    definition: "Customer reports being charged incorrectly (double charge, wrong amount, renewal surprise)."
+    synonyms: ["charged twice", "wrong amount", "unexpected billing"]
+    examples:
+      - "I was charged twice this week."
+  - label: Login Failure
+    active: true
+    definition: "Customer cannot log in due to credentials, account lock, or auth flow failure."
+    synonyms: ["can't log in", "locked out", "login error"]
+    examples:
+      - "My password doesn't work and reset isn't helping."
+  - label: MFA or Verification Code Not Received
+    active: true
+    definition: "Customer cannot complete verification because the code never arrives or is invalid."
+    synonyms: ["verification code", "OTP", "2FA code", "MFA issue"]
+    examples:
+      - "I never receive the SMS code."
+  - label: App Crash or Freeze
+    active: true
+    definition: "Application stops unexpectedly, freezes, or becomes unusable."
+    synonyms: ["crashing", "freezing", "app closes"]
+    examples:
+      - "The app crashes every time I open it."
+  - label: Feature Not Working
+    active: true
+    definition: "A specific function fails (button, upload, search, checkout, notifications)."
+    synonyms: ["not working", "broken feature", "doesn't load"]
+    examples:
+      - "The upload button doesn't do anything."
+  - label: Connectivity or Performance Issue
+    active: true
+    definition: "Slow performance, timeouts, connection drops, or service unavailability."
+    synonyms: ["slow", "timeout", "connection drops", "down"]
+    examples:
+      - "Everything is very slow and pages time out."
+  - label: Order Not Received
+    active: true
+    definition: "Order is delayed, missing, or status conflicts with reality."
+    synonyms: ["missing order", "delivery delay", "not received"]
+    examples:
+      - "It says delivered but I didn't get it."
+  - label: Wrong Item or Missing Items
+    active: true
+    definition: "Customer received incorrect items or parts are missing."
+    synonyms: ["wrong item", "missing items", "incomplete order"]
+    examples:
+      - "The package is missing one item."
+  - label: Cancellation Request
+    active: true
+    definition: "Customer wants to cancel a subscription or service."
+    synonyms: ["cancel", "stop subscription", "unsubscribe"]
+    examples:
+      - "Please cancel my subscription immediately."
+  - label: Plan Upgrade or Downgrade
+    active: true
+    definition: "Customer wants to change the subscription plan tier."
+    synonyms: ["upgrade", "downgrade", "change plan"]
+    examples:
+      - "I want to upgrade to premium."
+  - label: Complaint About Service
+    active: true
+    definition: "Customer is dissatisfied and complains about service quality or handling."
+    synonyms: ["complaint", "bad experience", "unhappy"]
+    examples:
+      - "This support experience has been terrible."
+  - label: Suspected Fraud
+    active: true
+    definition: "Customer suspects fraud or unauthorized activity."
+    synonyms: ["fraud", "unauthorized", "hacked"]
+    examples:
+      - "I see charges I didn't make."
+  - label: Other
+    active: true
+    definition: "Use when none of the above issues clearly apply."
+    synonyms: ["misc", "unknown"]
+    examples:
+      - "No clear matching issue."

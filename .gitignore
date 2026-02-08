@@ -1,0 +1,67 @@
+# --- OS / editors ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+.env.*
+!/.env.example
+
+# --- Databricks / Spark ---
+# local bundle / CLI state
+.databricks/
+databricks-cli/
+logs/
+*.log
+
+# --- Data & audio (never commit) ---
+data/
+sample_data/
+legacy_private/
+audio/
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.zip
+*.parquet
+*.db
+*.sqlite
+*.sqlite3
+*.delta/
+
+# --- Outputs & artifacts (never commit) ---
+outputs/
+artifacts/
+tmp/
+cache/
+models/
+checkpoints/
+
+# --- Secrets / keys ---
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+secrets/
+
+# --- Generic local caches ---
+.cache/
+cache/
+tmp/
+temp/
+mlruns/
+.dlt/
