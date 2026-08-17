@@ -1,5 +1,9 @@
 # Speech Analytics Lakehouse (Databricks, Contract-First)
 
+> **Maturity: working prototype.** Deterministic local contracts and CI cover
+> compilation, workflows, taxonomies, schema privacy, and the synthetic sample
+> path. No successful Databricks pipeline run is claimed yet.
+
 ## What this repo is
 This repository contains a Databricks-native speech analytics pipeline implemented as notebook-source Python scripts.
 
@@ -13,6 +17,8 @@ Design principles:
 - No real customer data is included in this repository.
 - Notebooks are notebook-source scripts; execution requires a Databricks workspace with Unity Catalog (`catalog`/`schema`) and a readable Volume containing WAV files.
 - Run instructions are in `docs/13_how_to_run.md`.
+- A deterministic, non-speech WAV fixture can be generated from `samples/` to
+  validate ingestion without customer audio.
 - Security posture: no raw transcript text is persisted in gold outputs; downstream insights use hashed references (for example `chunk_text_hash`) plus structured summaries.
 
 ## 60-second tour
@@ -25,12 +31,14 @@ Best entry points:
 2. `docs/03_data_model.md`
 3. `docs/04_workflows.md`
 4. `docs/13_how_to_run.md`
-5. `docs/14_github_readiness_audit.md`
+5. `docs/16_validation_record.md`
 
 If you only read one notebook: `notebooks/insights/insights_07_llm_consolidate_call_insights.py`, because it shows taxonomy-constrained call-level synthesis and final gold output shaping in one stage.
 
-## Quickstart (static-only)
-This repo is currently used for script/docs generation and static validation.
+## Local validation
+
+The repository includes executable contract checks that do not require a
+Databricks workspace.
 
 1. Review architecture and contracts:
    - `docs/02_architecture.md`
@@ -39,15 +47,32 @@ This repo is currently used for script/docs generation and static validation.
 2. Review notebook implementations:
    - `notebooks/foundation/`
    - `notebooks/insights/`
-3. Run static compile checks locally:
-   - `python -m py_compile notebooks/foundation/*.py`
-   - `python -m py_compile notebooks/insights/*.py`
+3. Run the same checks used by CI:
 
-Note: No Databricks jobs are executed in this repo workflow yet. Scripts only.
+   ```bash
+   python -m pip install -r requirements-dev.txt
+   python -m compileall -q notebooks samples tools tests
+   python tools/validate_repo.py
+   python -m unittest discover -s tests -v
+   ```
+
+These checks validate the 16-stage DAG, Git-source paths, required job
+parameters, taxonomy shapes and uniqueness, final-schema privacy guards, and a
+deterministic WAV fixture. They do not substitute for a Databricks run.
 
 ## How to run
 First-run execution guidance is documented in:
 - `docs/13_how_to_run.md`
+
+Both workflow templates use relative notebook paths from this public Git
+repository. Override the `catalog`, `schema`, and `volume_root` job parameters
+together for the target workspace; no personal `/Repos/<user>` edit is needed.
+
+For a confidential-data-free ingestion fixture:
+
+```bash
+python samples/generate_synthetic_wav.py --output samples/generated/synthetic_support_call.wav
+```
 
 ## Quick start smoke test (no external services)
 Run these stages in order:
@@ -119,5 +144,8 @@ Recommended smoke-test kill switches:
 - Taxonomies: `taxonomies/contact_drivers.yml`, `taxonomies/issues.yml`, `taxonomies/intents.yml`, `taxonomies/emotions.yml`
 
 ## Known issues
-- No blocker found in the latest static audit for first Databricks run.
+- Live Databricks execution remains unverified; the project therefore remains a
+  prototype rather than a released or production-ready system.
+- The workflow templates still require workspace-specific compute selection and
+  existing Unity Catalog resources.
 - Non-blocking warning: `notebooks/insights/insights_06_llm_extract_chunk_insights.py` uses `DELETE + INSERT` for `ops_pipeline_runs` where most notebooks use `MERGE`.
