@@ -1,6 +1,25 @@
 {
   "name": "speech-analytics-full-pipeline",
   "format": "MULTI_TASK",
+  "parameters": [
+    {
+      "name": "catalog",
+      "default": "main"
+    },
+    {
+      "name": "schema",
+      "default": "speech_analytics_prod"
+    },
+    {
+      "name": "volume_root",
+      "default": "/Volumes/main/speech_analytics_prod/speech_audio"
+    }
+  ],
+  "git_source": {
+    "git_url": "https://github.com/soulipaco/speechanalytics-databricks-pipeline.git",
+    "git_provider": "gitHub",
+    "git_branch": "main"
+  },
   "job_clusters": [
     {
       "job_cluster_key": "full_cluster",
@@ -17,14 +36,15 @@
       "task_key": "foundation_01_ingest_audio",
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_01_ingest_audio",
+        "notebook_path": "notebooks/foundation/foundation_01_ingest_audio.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0",
-          "volume_root": "<volume_root>"
+          "volume_root": "{{job.parameters.volume_root}}"
         }
       }
     },
@@ -37,10 +57,12 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_02_preprocess_audio",
+        "notebook_path": "notebooks/foundation/foundation_02_preprocess_audio.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
+          "volume_root": "{{job.parameters.volume_root}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -56,10 +78,12 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_03_diarize_audio",
+        "notebook_path": "notebooks/foundation/foundation_03_diarize_audio.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
+          "volume_root": "{{job.parameters.volume_root}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -75,10 +99,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_04_transcribe_audio",
+        "notebook_path": "notebooks/foundation/foundation_04_transcribe_audio.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -94,10 +119,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_05_align_turns",
+        "notebook_path": "notebooks/foundation/foundation_05_align_turns.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -113,10 +139,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_06_redact_pii",
+        "notebook_path": "notebooks/foundation/foundation_06_redact_pii.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -132,10 +159,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_07_translate_turns",
+        "notebook_path": "notebooks/foundation/foundation_07_translate_turns.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -151,10 +179,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/foundation/foundation_08_publish_and_finalize",
+        "notebook_path": "notebooks/foundation/foundation_08_publish_and_finalize.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -170,10 +199,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_01_compute_conversation_metrics",
+        "notebook_path": "notebooks/insights/insights_01_compute_conversation_metrics.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -189,10 +219,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_02_load_taxonomies_to_dim_tables",
+        "notebook_path": "notebooks/insights/insights_02_load_taxonomies_to_dim_tables.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -208,10 +239,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_03_build_text_chunks",
+        "notebook_path": "notebooks/insights/insights_03_build_text_chunks.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -227,10 +259,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_04_embed_chunks",
+        "notebook_path": "notebooks/insights/insights_04_embed_chunks.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0",
@@ -249,10 +282,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_05_build_vector_search_rag_index",
+        "notebook_path": "notebooks/insights/insights_05_build_vector_search_rag_index.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -268,10 +302,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_06_llm_extract_chunk_insights",
+        "notebook_path": "notebooks/insights/insights_06_llm_extract_chunk_insights.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0",
@@ -290,10 +325,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_07_llm_consolidate_call_insights",
+        "notebook_path": "notebooks/insights/insights_07_llm_consolidate_call_insights.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0",
@@ -312,10 +348,11 @@
       ],
       "job_cluster_key": "full_cluster",
       "notebook_task": {
-        "notebook_path": "/Repos/<user>/SpeechAnalytics/notebooks/insights/insights_08_quality_gates_and_finalize",
+        "notebook_path": "notebooks/insights/insights_08_quality_gates_and_finalize.py",
+        "source": "GIT",
         "base_parameters": {
-          "catalog": "main",
-          "schema": "speech_analytics_prod",
+          "catalog": "{{job.parameters.catalog}}",
+          "schema": "{{job.parameters.schema}}",
           "run_id": "{{job.run_id}}",
           "run_mode": "full",
           "max_files_per_run": "0"
@@ -323,5 +360,5 @@
       }
     }
   ],
-  "description": "Template job JSON for SpeechAnalytics. Replace /Repos/<user>/... with your real Databricks Repo path, and provide volume_root (for foundation_01_ingest_audio; optionally for other tasks if needed). Keep secret values in Databricks secret scopes, not in this file."
+  "description": "Git-source template for the public repository. Override catalog, schema, and volume_root together for the target environment. Keep secret values in Databricks secret scopes, not in this file."
 }

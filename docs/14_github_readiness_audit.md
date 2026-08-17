@@ -1,5 +1,9 @@
 # GitHub Readiness Audit
 
+> Historical snapshot from 2026-02-08. The workflow path and `volume_root`
+> warnings recorded below were resolved in the later hardening pass. See
+> `docs/16_validation_record.md` for current evidence and remaining limits.
+
 Date: 2026-02-08  
 Mode: Static checks only (no Databricks auth, no Databricks job runs)
 

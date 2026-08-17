@@ -28,6 +28,7 @@ Expected objects:
 `foundation_01_ingest_audio.py` requires a readable `volume_root` with WAV files.
 
 Expected:
+- A Unity Catalog Volume root in the form `/Volumes/<catalog>/<schema>/<volume>`.
 - Input path under `<volume_root>/bronze/audio_raw/`
 - Caller can list/read files in that location.
 
@@ -43,6 +44,35 @@ Optional libraries (for extended stages; not required for minimal smoke test):
 - `pyannote` (Foundation 03 advanced diarization)
 - `faster-whisper` or `openai-whisper` (Foundation 04 ASR backends)
 - `databricks.vector_search` (Insights 05/06 RAG vector-search paths)
+
+## Workflow Template Setup
+
+`workflows/smoke_test_job.json` and `workflows/full_job.json` read notebook
+sources directly from the public GitHub repository with `source: GIT` and
+relative paths. They do not require a personal Databricks Repo path.
+
+Before creating a job:
+
+1. Replace the `node_type_id` placeholder with an available workspace node type.
+2. Override the `catalog`, `schema`, and `volume_root` job parameters together.
+3. Confirm the Volume exists and create `<volume_root>/bronze/audio_raw/`.
+4. For branch testing, change `git_source.git_branch`; use `main` for the merged template.
+5. Keep endpoint keys and other credentials in Databricks secret mechanisms,
+   never in the JSON template.
+
+The first three foundation tasks explicitly receive
+`{{job.parameters.volume_root}}`; every task receives parameterized catalog and
+schema values.
+
+Generate a non-confidential ingestion fixture locally:
+
+```bash
+python samples/generate_synthetic_wav.py --output samples/generated/synthetic_support_call.wav
+```
+
+Upload that file to `<volume_root>/bronze/audio_raw/`. It contains deterministic
+tones, not spoken content, so it validates the file/path contract but is not ASR
+or semantic-quality evidence.
 
 ## Minimal Smoke Test (No External Services)
 
